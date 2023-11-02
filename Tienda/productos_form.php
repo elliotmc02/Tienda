@@ -55,7 +55,6 @@
     }
     ?>
 
-
     <div class="container">
         <h1>Producto</h1>
         <form action="" method="post">
