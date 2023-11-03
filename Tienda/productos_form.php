@@ -54,21 +54,18 @@
             }
         }
 
+
         // * Comprobar precio
         if (strlen($temp_precio) == 0) {
             $err_precio = "El precio es obligatorio";
+        } elseif (!is_numeric($temp_precio)) {
+            $err_precio = "El precio debe ser un número";
+        } elseif ($temp_precio < 0) {
+            $err_precio = "El precio no puede ser negativo";
+        } elseif ($temp_precio > 99999.99) {
+            $err_precio = "El precio no puede ser mayor de 99999.99";
         } else {
-            if (!filter_var($temp_precio, FILTER_VALIDATE_FLOAT)) {
-                $err_precio = "El precio debe ser un numero";
-            } else {
-                if ($temp_precio < 0) {
-                    $err_precio = "El precio no puede ser negativo";
-                } else if ($temp_precio > 99999.99) {
-                    $err_precio = "El precio no puede ser mayor de 99999.99";
-                } else {
-                    $precio = $temp_precio;
-                }
-            }
+            $precio = $temp_precio;
         }
 
         // * Comprobar cantidad
