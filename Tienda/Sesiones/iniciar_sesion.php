@@ -22,7 +22,7 @@
         $contrasena = $_POST["contrasena"];
 
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
-        // ' OR 1=1 -- '
+
         $resultado = $conexion->query($sql);
 
         if ($resultado->num_rows === 0) {
