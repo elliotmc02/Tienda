@@ -22,15 +22,16 @@
         $contrasena = $_POST["contrasena"];
 
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+        // " 1 OR 1 = 1; DROP TABLE usuarios; -- "
 
         $resultado = $conexion->query($sql);
 
         if ($resultado->num_rows === 0) {
-        ?>
+    ?>
             <div class="alert alert-danger" role="alert">
                 El usuario no existe
             </div>
-        <?php
+            <?php
         } else {
             while ($fila = $resultado->fetch_assoc()) {
                 $contrasena_cifrada = $fila["contrasena"];
@@ -42,9 +43,14 @@
                 echo "Inicio de sesion correcto";
                 session_start();
                 $_SESSION["usuario"] = $usuario;
-                header('location: ../index.php');
+                header('location: ../principal.php');
             } else {
-                echo "Contraseña incorrecta";
+            ?>
+                <div class="alert alert-danger" role="alert">
+                    Contraseña incorrecta
+                </div>
+    <?php
+
             }
         }
     }

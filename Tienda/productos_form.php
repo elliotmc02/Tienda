@@ -118,7 +118,7 @@
         if ($conexion->query($sql)) {
             echo "Producto añadido correctamente";
         } else {
-            echo "Error: " . $sql . "<br>" . $conexion->error;
+            echo "Ha habido un error al añadir el producto";
         }
     }
     ?>
