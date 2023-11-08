@@ -23,6 +23,12 @@
         $temp_precio = depurar($_POST["precio"]);
         $temp_cantidad = depurar($_POST["cantidad"]);
 
+        // Imagen
+        $nombre_imagen = $_FILES["imagen"]["name"];
+        $tipo_imagen = $_FILES["imagen"]["type"];
+        $tamano_imagen = $_FILES["imagen"]["size"];
+        $ruta_temporal = $_FILES["imagen"]["tmp_name"];
+
         // * Comprobar nombre
         if (strlen($temp_nombre) == 0) {
             $err_nombre = "El nombre es obligatorio";
@@ -72,8 +78,7 @@
         // * Comprobar cantidad
         if (strlen($temp_cantidad) == 0) {
             $err_cantidad = "La cantidad es obligatoria";
-        } elseif (filter_var($temp_cantidad, FILTER_VALIDATE_INT) === false) { // Otra forma de hacerlo, el ctype_digit no acepta negativos mientras que el filter_var si, pero el 0 te devuelve FALSE ya que el "0" se evalua como FALSE. Una forma de arreglar esto es comprobando estrictamente como he hecho
-            // } elseif (!ctype_digit($temp_cantidad)) {
+        } elseif (filter_var($temp_cantidad, FILTER_VALIDATE_INT) === false) {
             $err_cantidad = "La cantidad debe ser un número entero";
         } elseif ($temp_cantidad < 0) {
             $err_cantidad = "La cantidad no puede ser negativa";
@@ -82,43 +87,66 @@
         } else {
             $cantidad = $temp_cantidad;
         }
+
+        // * Comprobar imagen
+        if ($_FILES["imagen"]["error"] == 4 || $tamano_imagen == 0 && $_FILES["imagen"]["error"] == 0) {
+            $err_imagen = "Inserte una imagen";
+        } else {
+            $ruta_final = "imagenes/" . $nombre_imagen;
+            move_uploaded_file($ruta_temporal, $ruta_final);
+        }
     }
     ?>
 
     <div class="container">
         <h1>Producto</h1>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Nombre del producto:</label>
-                <input type="text" name="nombre" class="form-control">
+                <input class="form-control" type="text" name="nombre">
                 <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Descripcion del producto: </label>
-                <input type="text" name="descripcion" class="form-control">
+                <input class="form-control" type="text" name="descripcion">
                 <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
             </div>
             <div class="col-md-3 mb-3">
                 <label class="form-label">Precio: </label>
-                <input type="text" name="precio" class="form-control">
+                <input class="form-control" type="text" name="precio">
                 <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
             </div>
             <div class="col-md-3 mb-3">
                 <label class="form-label">Cantidad:</label>
-                <input type="text" name="cantidad" class="form-control">
+                <input class="form-control" type="text" name="cantidad">
                 <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="file" name="imagen">
+                <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
             </div>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
     </div>
 
     <?php
-    if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad)) {
-        $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad')";
+    if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
+        $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
         if ($conexion->query($sql)) {
-            echo "Producto añadido correctamente";
+    ?>
+
+            <div class="container alert alert-success mt-3" role="alert">
+                Producto añadido correctamente
+            </div>
+
+        <?php
         } else {
-            echo "Ha habido un error al añadir el producto";
+        ?>
+            <div class="container alert alert-danger mt-3" role="alert">
+                Ha habido un error al añadir el producto
+            </div>
+    <?php
         }
     }
     ?>

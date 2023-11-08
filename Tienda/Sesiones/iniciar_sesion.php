@@ -22,7 +22,6 @@
         $contrasena = $_POST["contrasena"];
 
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
-        // " 1 OR 1 = 1; DROP TABLE usuarios; -- "
 
         $resultado = $conexion->query($sql);
 
