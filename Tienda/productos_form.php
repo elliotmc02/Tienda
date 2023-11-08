@@ -7,7 +7,11 @@
     <title>Formulario productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <?php require "DATABASE/db_tienda.php" ?>
+    <?php
+
+    use function PHPSTORM_META\type;
+
+    require "DATABASE/db_tienda.php" ?>
 </head>
 
 <body>
@@ -90,10 +94,13 @@
 
         // * Comprobar imagen
         if ($_FILES["imagen"]["error"] == 4 || $tamano_imagen == 0 && $_FILES["imagen"]["error"] == 0) {
-            $err_imagen = "Inserte una imagen";
+            $err_imagen = "Inserte un archivo";
+        } else if (
+            !exif_imagetype($ruta_temporal)
+        ) {
+            $err_imagen = "Debe ser formato imagen";
         } else {
             $ruta_final = "imagenes/" . $nombre_imagen;
-            move_uploaded_file($ruta_temporal, $ruta_final);
         }
     }
     ?>
@@ -134,6 +141,7 @@
     if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
         $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
         if ($conexion->query($sql)) {
+            move_uploaded_file($ruta_temporal, $ruta_final);
     ?>
 
             <div class="container alert alert-success mt-3" role="alert">
