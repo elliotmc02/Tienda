@@ -95,9 +95,7 @@
         // * Comprobar imagen
         if ($_FILES["imagen"]["error"] == 4 || $tamano_imagen == 0 && $_FILES["imagen"]["error"] == 0) {
             $err_imagen = "Inserte un archivo";
-        } else if (
-            !exif_imagetype($ruta_temporal)
-        ) {
+        } else if (!exif_imagetype($ruta_temporal)) {
             $err_imagen = "Debe ser formato imagen";
         } else {
             $ruta_final = "imagenes/" . $nombre_imagen;

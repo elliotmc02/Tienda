@@ -42,6 +42,8 @@
     <div class="container">
         <h1>Pagina principal</h1>
         <h2>Bienvenido <?php echo $usuario ?></h2>
+
+        <a href="Sesiones/cerrar_sesion.php">Cerrar sesión</a>
     </div>
     <div class="container">
         <h1>Listado de productos</h1>
