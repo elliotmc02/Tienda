@@ -8,20 +8,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <?php require "../DATABASE/db_tienda.php" ?>
+    <?php require '../util/funciones.php'; ?>
 </head>
 
 <body>
     <?php
-    function depurar($entrada)
-    {
-        return trim(htmlspecialchars($entrada));
-    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $temp_usuario = depurar($_POST["usuario"]);
         $temp_contrasena = depurar($_POST["contrasena"]);
         $temp_fechaNacimiento = depurar($_POST["fechaNacimiento"]);
-
 
         // Validar usuario
         if (strlen($temp_usuario) == 0) {
@@ -54,8 +50,6 @@
                 }
             }
         }
-
-
 
         // Validar fecha
         if (strlen($temp_fechaNacimiento) == 0) {
@@ -105,12 +99,14 @@
                 <?php if (isset($err_fechaNacimiento)) echo '<label class=text-danger>' . $err_fechaNacimiento . '</label>' ?>
             </div>
             <input class="btn btn-primary" type="submit" value="Registrarse">
+            <a class="btn btn-secondary" href="iniciar_sesion.php">Ya tienes una cuenta?</a>
         </form>
     </div>
     <?php
     if (isset($usuario) && isset($contrasena_cifrada) && isset($fechaNacimiento)) {
-        $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada','$fechaNacimiento')";
-        if ($conexion->query($sql)) {
+        $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento) VALUES ('$usuario', '$contrasena_cifrada','$fechaNacimiento')";
+        $sql_cesta = "INSERT INTO cestas (usuario, precioTotal) VALUES ('$usuario', 0)";
+        if ($conexion->query($sql) && $conexion->query($sql_cesta)) {
     ?>
             <div class="alert alert-success" role="alert">
                 Usuario registrado correctamente

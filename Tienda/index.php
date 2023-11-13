@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Tienda</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <?php require 'DATABASE/db_tienda.php'; ?>
@@ -15,11 +15,13 @@
 <body>
     <?php
     session_start();
-    if (isset($_SESSION["usuario"])) {
+    if (isset($_SESSION["usuario"]) && isset($_SESSION["rol"])) {
         $usuario = $_SESSION["usuario"];
+        $rol = $_SESSION["rol"];
     } else {
-        // header('location: iniciar_sesion.php');
         $_SESSION["usuario"] = "invitado";
+        $_SESSION["rol"] = "cliente";
+        $rol = $_SESSION["rol"];
         $usuario = $_SESSION["usuario"];
     }
 
@@ -39,11 +41,13 @@
         array_push($productos, $nuevo_producto);
     }
     ?>
-    <div class="container">
-        <h1>Pagina principal</h1>
-        <h2>Bienvenido <?php echo $usuario ?></h2>
 
-        <a href="Sesiones/cerrar_sesion.php">Cerrar sesión</a>
+    <?php
+    require 'util/nav.php';
+    ?>
+
+    <div class="container">
+        <h2>Bienvenido <?php echo $usuario ?></h2>
     </div>
     <div class="container">
         <h1>Listado de productos</h1>
@@ -56,6 +60,14 @@
                     <th>Descripcion</th>
                     <th>Cantidad</th>
                     <th>Imagen</th>
+                    <th>Añadir a cesta</th>
+                    <?php
+                    if ($rol == "admin") {
+                    ?>
+                        <th>Acciones</th>
+                    <?php
+                    }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -64,12 +76,24 @@
                     echo "<tr class='table-info'>";
                     echo "<td>" . $producto->idProducto . "</td>";
                     echo "<td>" . $producto->nombreProducto . "</td>";
-                    echo "<td>" . $producto->precio . "</td>";
+                    echo "<td>" . $producto->precio . " €</td>";
                     echo "<td>" . $producto->descripcion . "</td>";
                     echo "<td>" . $producto->cantidad . "</td>";
                 ?>
                     <td><img src="<?php echo $producto->imagen ?>"></td>
+                    <td><a class="btn btn-primary">Añadir producto</a></td>
+                    <?php
+                    if ($rol == "admin") {
+                    ?>
+                        <td>
+                            <a class="btn btn-warning">
+                                Modificar
+                            </a>
+                            <a class="btn btn-danger" href="util/eliminar_producto.php?id=<?php echo $producto->idProducto ?>">
+                                Eliminar
+                        </td>
                 <?php
+                    }
                     echo "</tr>";
                 }
                 ?>

@@ -4,17 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario productos</title>
+    <title>Insertar Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <?php require "DATABASE/db_tienda.php" ?>
+    <?php require 'util/funciones.php'; ?>
 </head>
 
 <body>
     <?php
-    function depurar($entrada)
-    {
-        return trim(htmlspecialchars($entrada));
+    session_start();
+    if (isset($_SESSION["usuario"]) && isset($_SESSION["rol"])) {
+        $usuario = $_SESSION["usuario"];
+        $rol = $_SESSION["rol"];
+    } else {
+        $_SESSION["usuario"] = "invitado";
+        $_SESSION["rol"] = "invitado";
+        $usuario = $_SESSION["usuario"];
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -61,7 +67,6 @@
             }
         }
 
-
         // * Comprobar precio
         if (strlen($temp_precio) == 0) {
             $err_precio = "El precio es obligatorio";
@@ -97,40 +102,52 @@
             $ruta_final = "imagenes/" . $nombre_imagen;
         }
     }
+
+    require 'util/nav.php';
     ?>
 
-    <div class="container">
-        <h1>Producto</h1>
-        <form action="" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">Nombre del producto:</label>
-                <input class="form-control" type="text" name="nombre">
-                <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Descripcion del producto: </label>
-                <input class="form-control" type="text" name="descripcion">
-                <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Precio: </label>
-                <input class="form-control" type="text" name="precio">
-                <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Cantidad:</label>
-                <input class="form-control" type="text" name="cantidad">
-                <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Imagen</label>
-                <input class="form-control" type="file" name="imagen">
-                <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Enviar">
-        </form>
-    </div>
-
+    <?php
+    if ($rol == "admin") {
+    ?>
+        <div class="container">
+            <h1>Producto</h1>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Nombre del producto:</label>
+                    <input class="form-control" type="text" name="nombre">
+                    <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Descripcion del producto: </label>
+                    <input class="form-control" type="text" name="descripcion">
+                    <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Precio: </label>
+                    <input class="form-control" type="text" name="precio">
+                    <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Cantidad:</label>
+                    <input class="form-control" type="text" name="cantidad">
+                    <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Imagen</label>
+                    <input class="form-control" type="file" name="imagen">
+                    <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Enviar">
+            </form>
+        </div>
+    <?php
+    } else {
+    ?>
+        <div class="container alert alert-danger mt-3" role="alert">
+            No tienes permisos para acceder a esta pagina</div>
+    <?php
+    }
+    ?>
     <?php
     if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
         $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
