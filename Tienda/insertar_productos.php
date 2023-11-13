@@ -21,6 +21,7 @@
         $_SESSION["usuario"] = "invitado";
         $_SESSION["rol"] = "invitado";
         $usuario = $_SESSION["usuario"];
+        $rol = $_SESSION["rol"];
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -144,17 +145,19 @@
     } else {
     ?>
         <div class="container alert alert-danger mt-3" role="alert">
-            No tienes permisos para acceder a esta pagina</div>
+            <h1>Acceso denegado</h1>
+            <p>No tienes permisos para acceder a esta página</p>
+        </div>
     <?php
     }
     ?>
     <?php
     if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
         $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
+        $res = $conexion->query($sql);
         if ($conexion->query($sql)) {
             move_uploaded_file($ruta_temporal, $ruta_final);
     ?>
-
             <div class="container alert alert-success mt-3" role="alert">
                 Producto añadido correctamente
             </div>

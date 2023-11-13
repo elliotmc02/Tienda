@@ -14,6 +14,7 @@
                             Administrador
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="administrar_usuarios.php">Ver usuarios</a></li>
                             <li><a class="dropdown-item" href="insertar_productos.php">Insertar Producto</a></li>
                         </ul>
                     </li>

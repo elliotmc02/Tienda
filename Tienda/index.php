@@ -21,8 +21,8 @@
     } else {
         $_SESSION["usuario"] = "invitado";
         $_SESSION["rol"] = "cliente";
-        $rol = $_SESSION["rol"];
         $usuario = $_SESSION["usuario"];
+        $rol = $_SESSION["rol"];
     }
 
     $sql = "SELECT * from productos";

@@ -95,7 +95,7 @@
             </div>
             <div class="mb-3">
                 <label>Fecha de nacimiento: </label>
-                <input type="date" name="fechaNacimiento">
+                <input class="form-control" type="date" name="fechaNacimiento">
                 <?php if (isset($err_fechaNacimiento)) echo '<label class=text-danger>' . $err_fechaNacimiento . '</label>' ?>
             </div>
             <input class="btn btn-primary" type="submit" value="Registrarse">
@@ -106,19 +106,28 @@
     if (isset($usuario) && isset($contrasena_cifrada) && isset($fechaNacimiento)) {
         $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento) VALUES ('$usuario', '$contrasena_cifrada','$fechaNacimiento')";
         $sql_cesta = "INSERT INTO cestas (usuario, precioTotal) VALUES ('$usuario', 0)";
-        if ($conexion->query($sql) && $conexion->query($sql_cesta)) {
+        $duplicado = mysqli_query($conexion, "select * from usuarios where usuario = '$usuario'");
+        if (mysqli_num_rows($duplicado) > 0) {
     ?>
-            <div class="alert alert-success" role="alert">
-                Usuario registrado correctamente
+            <div class="container alert alert-danger mt-3" role="alert">
+                El usuario ya existe
             </div>
-        <?php
-            header('location: iniciar_sesion.php');
+            <?php
         } else {
-        ?>
-            <div class="alert alert-danger" role="alert">
-                Ha habido un error al registrarse
-            </div>
+            if ($conexion->query($sql) && $conexion->query($sql_cesta)) {
+            ?>
+                <div class="alert alert-success" role="alert">
+                    Usuario registrado correctamente
+                </div>
+            <?php
+                header('location: iniciar_sesion.php');
+            } else {
+            ?>
+                <div class="alert alert-danger" role="alert">
+                    Ha habido un error al registrarse
+                </div>
     <?php
+            }
         }
     }
     ?>
