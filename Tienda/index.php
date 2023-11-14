@@ -24,10 +24,18 @@
         $usuario = $_SESSION["usuario"];
         $rol = $_SESSION["rol"];
     }
+    
+    // comprobar si el usuario ha sido eliminado
+    $res = mysqli_query($conexion, "select usuario from usuarios where usuario = '$usuario'");
+    if (mysqli_num_rows($res) == 0) {
+        session_destroy();
+    }
+
 
     $sql = "SELECT * from productos";
     $resultado = $conexion->query($sql);
     $productos = [];
+
 
     while ($fila = $resultado->fetch_assoc()) {
         $nuevo_producto = new Producto(
@@ -74,6 +82,7 @@
                 <?php
                 foreach ($productos as $producto) {
                     echo "<tr class='table-info'>";
+
                     echo "<td>" . $producto->idProducto . "</td>";
                     echo "<td>" . $producto->nombreProducto . "</td>";
                     echo "<td>" . $producto->precio . " €</td>";
@@ -89,6 +98,8 @@
                             <a class="btn btn-warning">
                                 Modificar
                             </a>
+                            <?php
+                            ?>
                             <a class="btn btn-danger" href="util/eliminar_producto.php?id=<?php echo $producto->idProducto ?>">
                                 Eliminar
                         </td>

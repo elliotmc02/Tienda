@@ -154,7 +154,6 @@
     <?php
     if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
         $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
-        $res = $conexion->query($sql);
         if ($conexion->query($sql)) {
             move_uploaded_file($ruta_temporal, $ruta_final);
     ?>
