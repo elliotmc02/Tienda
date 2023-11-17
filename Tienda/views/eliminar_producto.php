@@ -16,4 +16,4 @@ if (file_exists($ruta_imagen)) {
 }
 $sql = "DELETE FROM productos WHERE idProducto = '$idProducto'";
 $conexion->query($sql);
-header('location: ../');
+header('location: ./');

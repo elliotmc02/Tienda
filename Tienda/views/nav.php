@@ -52,7 +52,7 @@
             <span class="nav-link">Navegación</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="./">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
@@ -73,10 +73,10 @@
                 <div class="collapse" id="ui-basic">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/ui-features/buttons.html">Insertar Producto</a>
+                            <a class="nav-link" href="insertar_producto.php">Insertar Producto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/ui-features/dropdowns.html">Lista de usuarios</a>
+                            <a class="nav-link" href="administrar_usuarios.php">Lista de usuarios</a>
                         </li>
                     </ul>
                 </div>

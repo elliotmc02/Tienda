@@ -16,6 +16,8 @@
   <!-- PHP links -->
   <?php require '../util/db_tienda.php'; ?>
   <?php require 'objetos/producto.php'; ?>
+
+  <script src="scripts/ampliarImg.js"></script>
 </head>
 
 <body>
@@ -74,7 +76,7 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar p-0 fixed-top d-flex flex-row bg-dark">
           <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-            <a class="navbar-brand brand-logo-mini" href="./"><img src="<!-- MINI LOGO -->" alt="logo" /></a>
+            <a class="navbar-brand brand-logo-mini" href="../"><img src="<!-- MINI LOGO -->" alt="logo" /></a>
           </div>
           <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
             <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -100,36 +102,10 @@
                       <p class="text-muted mb-0">1 Minutes ago</p>
                     </div>
                   </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="imagenes/faces/face2.jpg" alt="image" class="rounded-circle profile-pic" />
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">
-                        Cregh send you a message
-                      </p>
-                      <p class="text-muted mb-0">15 Minutes ago</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="imagenes/faces/face3.jpg" alt="image" class="rounded-circle profile-pic" />
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">
-                        Profile picture updated
-                      </p>
-                      <p class="text-muted mb-0">18 Minutes ago</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">4 new messages</p>
                 </div>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                <a class="nav-link" id="profileDropdown" href="../" data-toggle="dropdown">
                   <div class="navbar-profile">
                     <img class="img-xs rounded-circle" src="<!-- TODO Añadir LOGO -->" alt="" />
                     <p class="mb-0 d-none d-sm-block navbar-profile-name">
@@ -204,7 +180,7 @@
                           echo "<td>" . $producto->precio . " €</td>";
                           echo "<td>" . $producto->cantidad . "</td>";
                         ?>
-                          <td><img src="<?php echo $producto->imagen ?>"></td>
+                          <td><img class="ampliarImg" src="<?php echo $producto->imagen ?>"></td>
                           <td>
                             <form action="anadir_producto.php">
                               <input type="hidden" name="action" value="<?php echo $producto->idProducto ?>">
