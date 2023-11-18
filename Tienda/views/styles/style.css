@@ -25,40 +25,8 @@
   border: 5px solid black;
 }
 
-.container-fluid {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.sidebar {
-  width: 250px;
-  position: fixed;
-  top: 100px;
-  bottom: 0;
-  left: 0px;
-  z-index: 1;
-  padding-top: 20px;
-  transition: all 0.3s;
-}
-
-main {
-  margin-left: 250px;
-  padding: 15px;
-  transition: margin-left 0.3s;
-}
-
-#sidebarCollapse {
-  position: absolute;
-  top: 50%;
-  left: 235px;
-  z-index: 5;
-}
-
-#sidebarCollapse i {
-  position: absolute;
-  z-index: 7;
-  font-size: 30px;
-  cursor: pointer;
+.me-auto {
+  margin-left: auto;
 }
 
 .container-scroller {
@@ -126,4 +94,9 @@ main {
 }
 .auth .sign-up a {
   color: #0090e7;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: unset;
+  right: 0;
 }
