@@ -7,17 +7,20 @@
   <title>Insertar Producto</title>
 
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+  <!-- Iconos Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
   <!-- Mi CSS -->
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="images/logo.png" />
+  <link rel="shortcut icon" href="imagenes/logo.png" />
 
   <!-- PHP links -->
-  <?php require "../util/db_tienda.php" ?>
-  <?php require 'funciones/funciones.php'; ?>
+  <?php require '../util/db_tienda.php'; ?>
+  <?php require 'objetos/producto.php'; ?>
 </head>
 
 <body>
@@ -114,54 +117,17 @@
       $ruta_final = "imagenes/productos/" . $nombre_imagen;
     }
   }
+
+  require "header.php";
+
+  if ($rol == "admin") {
+    require "sidebar.php";
+  }
   ?>
   <div class="container">
     <div class="row">
-      <!-- Sidebar -->
-      <!-- <?php require "nav.php"; ?> -->
 
-      <!-- Main content -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-darg bg-dark">
-          <a class="navbar-brand" href="./"><img src="<!-- MINI LOGO -->" alt="logo" /></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i></i> <span></span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-                  <!-- Contenido de la caja de mensajes aquí -->
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div>
-                    <img src="<!-- TODO Añadir LOGO -->" alt="" />
-                    <p><!-- TODO PHP Usuario --></p>
-                    <i></i>
-                  </div>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                  <!-- Contenido del perfil aquí -->
-                  <a class="dropdown-item" href="#">
-                    <div><i></i></div>
-                    <p>Ajustes</p>
-                  </a>
-                  <a class="dropdown-item" href="cerrar_sesion.php">
-                    <div><i></i></div>
-                    <p>Cerrar Sesión</p>
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-
         <!-- Contenido Principal -->
         <?php
         if ($rol != "admin") {
@@ -181,46 +147,46 @@
                   <h4 class="card-title">Insertar Producto</h4>
                   <p class="card-description">Producto</p>
                   <form action="" method="post" enctype="multipart/form-data">
-                      <div class="form-group">
-                        <label for="exampleInputName1">Nombre</label>
-                        <input class="form-control mb-1 text-light" type="text" placeholder="Nombre" name="nombre" />
-                        <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputName1">Descripción</label>
-                        <input class="form-control mb-1 text-light" type="text" placeholder="Descripcion" name="descripcion" />
-                        <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="exampleInputName1">Precio</label>
-                            <input class="form-control mb-1 text-light" type="text" placeholder="Precio" name="precio" />
-                            <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="exampleInputName1">Cantidad</label>
-                            <input class="form-control mb-1 text-light" type="text" placeholder="Cantidad" name="cantidad" />
-                            <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
-                          </div>
+                    <div class="form-group">
+                      <label for="exampleInputName1">Nombre</label>
+                      <input class="form-control mb-1 text-light" type="text" placeholder="Nombre" name="nombre" />
+                      <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputName1">Descripción</label>
+                      <input class="form-control mb-1 text-light" type="text" placeholder="Descripcion" name="descripcion" />
+                      <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="exampleInputName1">Precio</label>
+                          <input class="form-control mb-1 text-light" type="text" placeholder="Precio" name="precio" />
+                          <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label>Insertar Imagen</label>
-                        <input class="file-upload-default" type="file" name="imagen" />
-                        <div class="input-group col-xs-12">
-                          <input class="form-control file-upload-info" type="text" disabled placeholder="Insertar Imagen" />
-                          <span class="input-group-append">
-                            <input class="file-upload-browse btn btn-primary" type="button" value="Subir" />
-                          </span>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="exampleInputName1">Cantidad</label>
+                          <input class="form-control mb-1 text-light" type="text" placeholder="Cantidad" name="cantidad" />
+                          <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
                         </div>
-                        <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
                       </div>
-                      <input class="btn btn-primary mr-2" type="submit" value="Insertar" />
-                      <a class="btn btn-dark" href="../">Cancelar</a>
-                    </form>
+                    </div>
+                    <div class="form-group">
+                      <label>Insertar Imagen</label>
+                      <input class="file-upload-default" type="file" name="imagen" />
+                      <div class="input-group col-xs-12">
+                        <input class="form-control file-upload-info" type="text" disabled placeholder="Insertar Imagen" />
+                        <span class="input-group-append">
+                          <input class="file-upload-browse btn btn-primary" type="button" value="Subir" />
+                        </span>
+                      </div>
+                      <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
+                    </div>
+                    <input class="btn btn-primary mr-2" type="submit" value="Insertar" />
+                    <a class="btn btn-dark" href="./">Cancelar</a>
+                  </form>
                 </div>
               </div>
             </div>
@@ -253,11 +219,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <!-- Jquery  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- Otro JS -->
-  <script src="scripts/off-canvas.js"></script>
-  <script src="scripts/hoverable-collapse.js"></script>
-  <script src="scripts/misc.js"></script>
-  <script src="scripts/settings.js"></script>
+
   <script src="scripts/file-upload.js"></script>
 </body>
 
