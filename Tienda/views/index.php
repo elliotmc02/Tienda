@@ -21,7 +21,7 @@
 
     <!-- PHP links -->
     <?php require '../util/db_tienda.php'; ?>
-    <?php require 'objetos/producto.php'; ?>
+    <?php require 'Objetos/producto.php'; ?>
     <!-- Mi JS link -->
     <script src="scripts/ampliarImg.js"></script>
 </head>
