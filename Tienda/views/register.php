@@ -2,23 +2,25 @@
 <html lang="es">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Registrar</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css" />
-  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css" />
-  <link rel="stylesheet" href="styles/style.css" />
-  <!-- End layout styles -->
-  <link rel="shortcut icon" href="images/logo.png" />
 
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+  <!-- Mi CSS -->
+  <link rel="stylesheet" href="styles/style.css" />
+
+  <!-- Logo Pagina -->
+  <link rel="shortcut icon" href="imagenes/logo.png" />
+
+  <!-- PHP links -->
   <?php require "../util/db_tienda.php" ?>
   <?php require 'funciones/funciones.php'; ?>
 </head>
 
 <body>
-
   <?php
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -107,29 +109,29 @@
     <div class="container-fluid page-body-wrapper full-page-wrapper">
       <div class="row w-100 m-0">
         <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-          <div class="card col-lg-4 mx-auto">
-            <div class="card-body px-5 py-5">
-              <h3 class="card-title text-left mb-3">Registrarse</h3>
-              <form action="" method="post">
+          <div class="card col-lg-4 mx-auto border-0">
+            <div class="card-body px-5 py-5 bg-dark">
+              <h3 class="card-title mb-3 text-light">Registrarse</h3>
+              <form class="text-light" action="" method="post">
                 <div class="form-group">
                   <label>Usuario</label>
-                  <input class="form-control p_input mb-1 text-light" type="text" name="usuario" />
+                  <input class="form-control mb-1" type="text" name="usuario" />
                   <?php if (isset($err_usuario)) echo '<label class=text-danger>' . $err_usuario . '</label>' ?>
                 </div>
                 <div class="form-group">
                   <label>Contraseña</label>
-                  <input class="form-control p_input mb-1 text-light" type="password" name="contrasena" />
+                  <input class="form-control mb-1" type="password" name="contrasena" />
                   <?php if (isset($err_contrasena)) echo '<label class=text-danger>' . $err_contrasena . '</label>' ?>
                 </div>
                 <div class="form-group">
                   <label>Fecha de nacimiento</label>
-                  <input class="form-control p_input mb-1 text-light" type="date" name="fechaNacimiento" />
+                  <input class="form-control mb-1" type="date" name="fechaNacimiento" />
                   <?php if (isset($err_fechaNacimiento)) echo '<label class=text-danger>' . $err_fechaNacimiento . '</label>' ?>
                 </div>
                 <div class="text-center">
-                  <input class="btn btn-primary btn-block enter-btn" type="submit" value="Registrarse">
+                  <input class="btn btn-primary btn-block enter-btn mt-3" type="submit" value="Registrarse" />
                 </div>
-                <p class="sign-up text-center">
+                <p class="sign-up">
                   Ya tienes una cuenta?<a href="login.php"> Iniciar sesión</a>
                 </p>
                 <?php if (isset($err)) echo '<label class=text-danger>' . $err . '</label>' ?>
@@ -144,12 +146,15 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
-  <script src="scripts/vendors/js/vendor.bundle.base.js"></script>
-  <script src="scripts/js/off-canvas.js"></script>
-  <script src="scripts/js/hoverable-collapse.js"></script>
-  <script src="scripts/js/misc.js"></script>
-  <script src="scripts/js/settings.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <!-- Jquery  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Otro JS -->
+  <script src="scripts/off-canvas.js"></script>
+  <script src="scripts/hoverable-collapse.js"></script>
+  <script src="scripts/misc.js"></script>
+  <script src="scripts/settings.js"></script>
   <!-- endinject -->
 </body>
 
