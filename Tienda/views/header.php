@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark mb-5" data-bs-theme="dark">
     <div class="container-fluid">
         <?php if ($rol == "admin") { ?>
-        <a class="navbar-brand" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-            <i class="bi bi-list"></i>
-        </a>
+            <a class="navbar-brand" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                <i class="bi bi-list"></i>
+            </a>
         <?php } ?>
         <a class="navbar-brand" href="./">Mi tienda</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,10 +20,59 @@
                     <i class="bi bi-cart3 fs-2"></i>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Productos</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                    <?php
+                    // Mostrar productos en la cesta
+                    $sql = "select precioTotal from cestas where usuario = '$usuario'";
+                    $precioTotal = $conexion->query($sql)->fetch_assoc()["precioTotal"];
+                    $sql = "select idProducto, cantidad from productoscestas where idCesta = (select idCesta from cestas where usuario = '$usuario')";
+                    $resultado = $conexion->query($sql);
+                    $productosCesta = [];
+                    require "Objetos/productocesta.php";
+                    while ($fila = $resultado->fetch_assoc()) {
+                        $nuevo_productoCesta = new ProductoCesta(
+                            $fila["idProducto"],
+                            $fila["cantidad"]
+                        );
+                        array_push($productosCesta, $nuevo_productoCesta);
+                    }
+                    if (count($productosCesta) == 0) {
+                    ?>
+                        <h6 class="text-center">No hay productos en la cesta</h6>
+                    <?php
+                    } else {
+                    ?>
+                        <h6 class="text-center">Mi cesta</h6>
+                        <?php
+                        foreach ($productosCesta as $producto) {
+                            $sql = "select nombreProducto, precio from productos where idProducto = '$producto->idProducto'";
+                            $resultado = $conexion->query($sql);
+                            $fila = $resultado->fetch_assoc();
+                            $nombreProducto = $fila["nombreProducto"];
+                            $precio = $fila["precio"];
+                        ?>
+                            <li class='dropdown-item'>
+                                <div class="row row-cols-2">
+                                    <p class='text-start'><?php echo $nombreProducto ?></p>
+                                    <p class="text-end"><?php echo $producto->cantidad ?></p>
+                                </div>
+                                <p class='text-end'><?php echo $precio * $producto->cantidad ?> €</p>
+
+                            </li>
+                            <li>
+                                <hr class='dropdown-divider'>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                        <li class="dropdown-item">
+                            <div class="row row-cols-2">
+                                <p class="text-start">Total</p>
+                                <p class="text-end"><?php echo $precioTotal ?> €</p>
+                            </div>
+                        </li>
+                    <?php
+                    }
+                    ?>
                 </ul>
             </div>
             <?php

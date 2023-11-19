@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="imagenes/logo.png" />
+  <link rel="shortcut icon" href="images/logo.png" />
 
   <!-- PHP links -->
   <?php require "../util/db_tienda.php" ?>
@@ -37,7 +37,7 @@
       } else {
         $patron = "/^[A-Za-z_]{4,12}$/";
         if (!preg_match($patron, $temp_usuario)) {
-          $err_usuario = "El nombre solo pude contener letras o espacios en blanco";
+          $err_usuario = "El nombre solo pude contener letras o barrabajas";
         } else {
           $usuario = $temp_usuario;
         }
@@ -47,12 +47,12 @@
     if (strlen($temp_contrasena) == 0) {
       $err_contrasena = "La contraseña es obligatorio";
     } else {
-      if (strlen($temp_contrasena) > 255 || strlen($temp_contrasena) < 4) {
-        $err_contrasena = "La contraseña debe tener minimo 4 caracteres y maximo 255";
+      if (strlen($temp_contrasena) > 20 || strlen($temp_contrasena) < 8) {
+        $err_contrasena = "La contraseña debe tener entre 8 y 20 caracteres";
       } else {
-        $patron = "/^[A-Za-z0-9]{4,255}$/";
+        $patron = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/";
         if (!preg_match($patron, $temp_contrasena)) {
-          $err_contrasena = "La contraseña solo pude contener letras o numeros";
+          $err_contrasena = "La contraseña debe tener al menos una letra mayuscula, una minuscula, un numero y un caracter especial";
         } else {
           $contrasena = $temp_contrasena;
           $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);

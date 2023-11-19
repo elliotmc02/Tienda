@@ -1,9 +1,11 @@
 <?php
 require "../util/db_tienda.php";
-$idProducto = $_POST["action"];
+$idProducto = $_POST["eliminarProducto"];
 
-// $sql = "SELECT imagen from productos where idProducto = '$idProducto'";
-$sql = "SELECT imagen from productos where $idProducto = idProducto";
+$sql = "DELETE FROM productoscestas WHERE idProducto = '$idProducto'";
+$conexion->query($sql);
+
+$sql = "SELECT imagen from productos where idProducto = '$idProducto'";
 $ruta_imagen = $conexion->query($sql)->fetch_assoc()["imagen"];
 
 // $res = mysqli_query($conexion, "select imagen from productos where idProducto = '$idProducto'");

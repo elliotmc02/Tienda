@@ -1,3 +1,17 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(56, 56, 56);
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
 .ampliarImg {
   width: 100%;
   height: 200px;
@@ -58,7 +72,7 @@
 }
 
 .auth.login-bg {
-  background: url("../imagenes/auth/Login_bg.jpg");
+  background: url("../images/auth/Login_bg.jpg");
   background-size: cover;
 }
 
@@ -68,6 +82,11 @@
 
 .card-body {
   border-radius: 2%;
+}
+
+.card .card-description {
+  color: #bfbfbf;
+  font-weight: 300;
 }
 
 .btn-block {
@@ -102,14 +121,41 @@
   margin-right: 2%;
 }
 
-/* .card {
-  width: 100%;
-} */
-
 .loginForm {
   width: 200px;
 }
 
-.cajaProductos {
-  border: 2px solid black;
+.stretch-card {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  -webkit-justify-content: stretch;
+  justify-content: stretch;
+}
+.stretch-card > .card {
+  width: 100%;
+  min-width: 100%;
+}
+
+.form-group .file-upload-default {
+  visibility: hidden;
+  position: absolute;
+}
+
+.input-group-append {
+  display: flex;
+}
+
+.input-group-append button {
+  position: relative;
+  z-index: 2;
+}
+
+.h-20 {
+  height: 15%;
+}
+
+.h-10 {
+  height: 10%;
 }

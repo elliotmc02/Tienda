@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="styles/style.css" />
 
     <!-- Logo Pagina -->
-    <link rel="shortcut icon" href="imagenes/logo.png" />
+    <link rel="shortcut icon" href="images/logo.png" />
 
     <!-- PHP links -->
     <?php require '../util/db_tienda.php'; ?>
@@ -76,42 +76,85 @@
 
     <!-- Contenido de la página -->
     <h2 class="mb-5 text-center">Lista de Productos</h2>
-    <div class="container text-center cajaProductos">
+    <div class="container text-center">
         <?php
         if (count($productos) == 0) {
             echo "<h4>No hay productos actualmente</h4>";
         } else {
         ?>
-            <div class="row row-cols-5 justify-content-center">
+            <div class="row row-cols-4 justify-content-center">
                 <?php
                 foreach ($productos as $producto) {
                 ?>
                     <div class="col m-2">
-                        <div class="card bg-dark" data-bs-theme="dark">
+                        <div class="card h-100 bg-dark" data-bs-theme="dark">
                             <img class="card-img-top ampliarImg" src="<?php echo $producto->imagen ?>" alt="Foto">
-                            <div class="card-body">
+                            <div class="card-header h-10">
                                 <h5 class="card-title"><?php echo $producto->nombreProducto ?></h5>
-                                <p class="card-text"><?php echo $producto->descripcion ?></p>
-                                <p class="card-text"><?php echo $producto->precio ?>€</p>
+                            </div>
+                            <div class="card-body h-10 fs-6 overflow-auto">
+                                <p class="card-text text-start"><?php echo $producto->descripcion ?></p>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-start fs-5">En stock: <?php echo $producto->cantidad ?> unidades</p>
+                            </div>
+                            <div class="card-footer row row-cols-2">
+                                <p class="card-text text-success text-start fs-4"><?php echo $producto->precio ?>€</p>
+                                <form action="anadir_producto.php" method="post">
+                                    <input type="hidden" name="anadirProducto" value="<?php echo $producto->idProducto ?>">
+                                    <select name="cantidad">
+                                        <?php
+                                        $maxCantidad = min(5, $producto->cantidad);
+                                        for ($i = 1; $i <= $maxCantidad; $i++) {
+                                        ?>
+                                            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                    <?php
+                                    if ($usuario == "invitado") {
+                                    ?>
+                                        <button class="btn btn-success" type="submit" disabled><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <button class="btn btn-success" type="submit"><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                    <?php
+                                    }
+                                    ?>
+                                </form>
+                            </div>
+                            <div class="card-footer">
                                 <?php
-                                if ($usuario != "invitado") {
-                                ?>
-                                    <form action="anadir_producto.php">
-                                        <input type="hidden" name="action" value="<?php echo $producto->idProducto ?>">
-                                        <input class="btn btn-outline-primary" type="submit" value="Añadir a la cesta">
-                                    </form>
-                                <?php
-                                }
                                 if ($rol == "admin") {
+                                    $modalId = 'exampleModal' . $producto->idProducto;
                                 ?>
-                                    <div class="row row-cols-2 mt-4">
+                                    <div class="row row-cols-2">
                                         <form action="modificar_producto.php" method="post">
-                                            <input type="hidden" name="action" value="<?php echo $producto->idProducto ?>">
+                                            <input type="hidden" name="modificarProducto" value="<?php echo $producto->idProducto ?>">
                                             <input class="btn btn-outline-warning" type="submit" value="Modificar">
                                         </form>
                                         <form action="eliminar_producto.php" method="post">
-                                            <input type="hidden" name="action" value="<?php echo $producto->idProducto ?>">
-                                            <input class="btn btn-outline-danger" type="submit" value="Eliminar">
+                                            <input type="hidden" name="eliminarProducto" value="<?php echo $producto->idProducto ?>">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
+                                                Eliminar
+                                            </button>
+                                            <div class="modal fade" id="<?php echo $modalId; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
+                                                            <h5>Estás apunto de cometer una acción irreversible</h5>
+                                                            Estás seguro de que quieres eliminar este producto?
+                                                        </div>
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <input class="btn btn-danger" type="submit" value="Eliminar">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 <?php

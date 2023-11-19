@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="imagenes/logo.png" />
+  <link rel="shortcut icon" href="images/logo.png" />
 
   <!-- PHP links -->
   <?php require '../util/db_tienda.php'; ?>
-  <?php require 'funciones/funciones.php'; ?>
+  <?php require_once 'funciones/funciones.php'; ?>
 </head>
 
 <body>
@@ -55,7 +55,7 @@
       if (strlen($temp_nombre) > 40) {
         $err_nombre = "El nombre no puede tener mas de 40 caracteres";
       } else {
-        $patron = "/^[A-Za-z0-9]*( [A-Za-z0-9]+)*$/";
+        $patron = "/^^[A-Za-z0-9\s]{1,40}$/";
         if (!preg_match($patron, $temp_nombre)) {
           $err_nombre = "El nombre solo pude contener letras, numeros o espacios en blanco";
         } else {
@@ -71,7 +71,7 @@
       if (strlen($temp_descripcion) > 255) {
         $err_descripcion = "La descripcion no puede tener mas de 255 caracteres";
       } else {
-        $patron = "/^[A-Za-z0-9]*( [A-Za-z0-9]+)*$/";
+        $patron = "/^[A-Za-z0-9\s.,;:]{1,255}$/";
         if (!preg_match($patron, $temp_descripcion)) {
           $err_descripcion = "La descripcion solo pude contener letras, numeros o espacios en blanco";
         } else {
@@ -107,112 +107,107 @@
     }
 
     // * Comprobar imagen
+    $formatosValidos = array(IMAGETYPE_PNG, IMAGETYPE_JPEG);
     if ($_FILES["imagen"]["error"] == 4 || $tamano_imagen == 0 && $_FILES["imagen"]["error"] == 0) {
       $err_imagen = "Inserte un archivo";
     } else if ($tamano_imagen > 1000000) {
       $err_imagen = "El tamaño de la imagen no puede ser mayor de 1MB";
-    } else if (!exif_imagetype($ruta_temporal)) {
-      $err_imagen = "Debe ser formato imagen";
+    } else if (!in_array(exif_imagetype($ruta_temporal), $formatosValidos)) {
+      $err_imagen = "El formato de la imagen debe ser PNG, JPG o JPEG";
     } else {
-      $ruta_final = "imagenes/productos/" . $nombre_imagen;
+      $ruta_final = "images/productos/" . $nombre_imagen;
     }
   }
 
-  require "header.php";
-
   if ($rol == "admin") {
+    require "header.php";
     require "sidebar.php";
   }
   ?>
   <div class="container">
-    <div class="row">
-
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <!-- Contenido Principal -->
-        <?php
-        if ($rol != "admin") {
-        ?>
-          <div class="container alert alert-danger mt-3" role="alert">
-            <h1>Acceso denegado</h1>
-            <p>No tienes permisos para acceder a esta página</p>
-            <a href="./">Volver al inicio</a>
-          </div>
-        <?php
-        } else {
-        ?>
-          <div class="row">
-            <div class="col-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Insertar Producto</h4>
-                  <p class="card-description">Producto</p>
-                  <form action="" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                      <label for="exampleInputName1">Nombre</label>
-                      <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" />
-                      <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputName1">Descripción</label>
-                      <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" />
-                      <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="exampleInputName1">Precio</label>
-                          <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" />
-                          <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="exampleInputName1">Cantidad</label>
-                          <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" />
-                          <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>Insertar Imagen</label>
-                      <input class="file-upload-default" type="file" name="imagen" />
-                      <div class="input-group col-xs-12">
-                        <input class="form-control file-upload-info" type="text" disabled placeholder="Insertar Imagen" />
-                        <span class="input-group-append">
-                          <input class="file-upload-browse btn btn-primary" type="button" value="Subir" />
-                        </span>
-                      </div>
-                      <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
-                    </div>
-                    <input class="btn btn-primary mr-2" type="submit" value="Insertar" />
-                    <a class="btn btn-dark" href="./">Cancelar</a>
-                  </form>
+    <!-- Contenido Principal -->
+    <?php
+    if ($rol != "admin") {
+    ?>
+      <div class="container alert alert-danger mt-3" role="alert">
+        <h1>Acceso denegado</h1>
+        <p>No tienes permisos para acceder a esta página</p>
+        <a href="./">Volver al inicio</a>
+      </div>
+    <?php
+    } else {
+    ?>
+      <div class="row">
+        <div class="col-12 mb-1 stretch-card">
+          <div class="card bg-dark">
+            <div class="card-body">
+              <h4 class="card-title text-light">Insertar Producto</h4>
+              <p class="card-description text-light">Producto</p>
+              <form class="text-light" action="" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="exampleInputName1">Nombre</label>
+                  <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" />
+                  <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
                 </div>
-              </div>
+                <div class="form-group">
+                  <label for="exampleInputName1">Descripción</label>
+                  <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" />
+                  <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="exampleInputName1">Precio</label>
+                      <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" />
+                      <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="exampleInputName1">Cantidad</label>
+                      <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" />
+                      <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Insertar Imagen</label>
+                  <input class="file-upload-default" type="file" name="imagen" />
+                  <div class="input-group col-sm-12">
+                    <input class="form-control file-upload-info" type="text" disabled placeholder="Insertar Imagen" />
+                    <span class="input-group-append">
+                      <input class="file-upload-browse btn btn-primary" type="button" value="Subir" />
+                    </span>
+                  </div>
+                  <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
+                </div>
+                <input class="btn btn-primary m-1" type="submit" value="Insertar" />
+                <a class="btn btn-secondary" href="./">Cancelar</a>
+              </form>
             </div>
           </div>
-          <?php
-        }
-        if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
-          $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
-          if ($conexion->query($sql)) {
-            move_uploaded_file($ruta_temporal, $ruta_final);
-          ?>
-            <div class="container alert alert-success mt-3" role="alert">
-              Producto añadido correctamente
-            </div>
-          <?php
-          } else {
-          ?>
-            <div class="container alert alert-danger mt-3" role="alert">
-              Ha habido un error al añadir el producto
-            </div>
-        <?php
-          }
-        }
-        ?>
-      </main>
-    </div>
+        </div>
+      </div>
+      <?php
+    }
+    if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad) && isset($ruta_final)) {
+      $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen) VALUES ('$nombre', '$precio', '$descripcion', '$cantidad', '$ruta_final')";
+      if ($conexion->query($sql)) {
+        move_uploaded_file($ruta_temporal, $ruta_final);
+      ?>
+        <div class="container alert alert-success mt-3" role="alert">
+          Producto añadido correctamente
+        </div>
+      <?php
+      } else {
+      ?>
+        <div class="container alert alert-danger mt-3" role="alert">
+          Ha habido un error al añadir el producto
+        </div>
+    <?php
+      }
+    }
+    ?>
   </div>
   <!-- container-scroller -->
   <!-- Bootstrap JS -->

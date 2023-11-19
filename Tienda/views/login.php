@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="imagenes/logo.png" />
+  <link rel="shortcut icon" href="images/logo.png" />
 
   <!-- PHP links -->
   <?php require "../util/db_tienda.php" ?>
