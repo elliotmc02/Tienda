@@ -1,8 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark mb-5" data-bs-theme="dark">
     <div class="container-fluid">
+        <?php if ($rol == "admin") { ?>
         <a class="navbar-brand" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
             <i class="bi bi-list"></i>
         </a>
+        <?php } ?>
         <a class="navbar-brand" href="./">Mi tienda</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

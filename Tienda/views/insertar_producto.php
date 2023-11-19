@@ -20,7 +20,7 @@
 
   <!-- PHP links -->
   <?php require '../util/db_tienda.php'; ?>
-  <?php require 'objetos/producto.php'; ?>
+  <?php require 'funciones/funciones.php'; ?>
 </head>
 
 <body>
@@ -149,26 +149,26 @@
                   <form action="" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="exampleInputName1">Nombre</label>
-                      <input class="form-control mb-1 text-light" type="text" placeholder="Nombre" name="nombre" />
+                      <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" />
                       <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputName1">Descripción</label>
-                      <input class="form-control mb-1 text-light" type="text" placeholder="Descripcion" name="descripcion" />
+                      <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" />
                       <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
                     </div>
                     <div class="row">
                       <div class="col-md-2">
                         <div class="form-group">
                           <label for="exampleInputName1">Precio</label>
-                          <input class="form-control mb-1 text-light" type="text" placeholder="Precio" name="precio" />
+                          <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" />
                           <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
                           <label for="exampleInputName1">Cantidad</label>
-                          <input class="form-control mb-1 text-light" type="text" placeholder="Cantidad" name="cantidad" />
+                          <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" />
                           <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
                         </div>
                       </div>
