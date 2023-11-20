@@ -30,3 +30,4 @@ if ($usuario == "invitado") {
         header("Location: ./");
     }
 }
+
