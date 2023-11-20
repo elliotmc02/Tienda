@@ -125,7 +125,6 @@
   }
   ?>
   <div class="container">
-    <!-- Contenido Principal -->
     <?php
     if ($rol != "admin") {
     ?>
@@ -146,43 +145,39 @@
               <form class="text-light" action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                   <label for="exampleInputName1">Nombre</label>
-                  <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" />
+                  <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre">
                   <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputName1">Descripción</label>
-                  <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" />
+                  <label>Descripción</label>
+                  <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion">
                   <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
                 </div>
                 <div class="row">
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="exampleInputName1">Precio</label>
-                      <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" />
+                      <label>Precio</label>
+                      <input class="form-control mb-1" type="text" placeholder="Precio" name="precio">
                       <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="exampleInputName1">Cantidad</label>
-                      <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" />
+                      <label>Cantidad</label>
+                      <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad">
                       <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label>Insertar Imagen</label>
-                  <input class="file-upload-default" type="file" name="imagen" />
-                  <div class="input-group col-sm-12">
-                    <input class="form-control file-upload-info" type="text" disabled placeholder="Insertar Imagen" />
-                    <span class="input-group-append">
-                      <input class="file-upload-browse btn btn-primary" type="button" value="Subir" />
-                    </span>
-                  </div>
+                  <input class="form-control" type="file" name="imagen">
                   <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
                 </div>
-                <input class="btn btn-primary m-1" type="submit" value="Insertar" />
-                <a class="btn btn-secondary" href="./">Cancelar</a>
+                <div class="form-group mt-3">
+                  <input class="btn btn-primary m-1" type="submit" value="Insertar">
+                  <a class="btn btn-secondary" href="./">Cancelar</a>
+                </div>
               </form>
             </div>
           </div>
@@ -209,13 +204,10 @@
     }
     ?>
   </div>
-  <!-- container-scroller -->
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <!-- Jquery  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-  <script src="scripts/file-upload.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -40,7 +40,7 @@ CREATE TABLE `cestas` (
 
 LOCK TABLES `cestas` WRITE;
 /*!40000 ALTER TABLE `cestas` DISABLE KEYS */;
-INSERT INTO `cestas` VALUES (1,'admin',3908.54),(6,'Elliot',0.00),(7,'Jaime',0.00);
+INSERT INTO `cestas` VALUES (1,'admin',0.00),(6,'Elliot',0.00),(7,'Jaime',0.00);
 /*!40000 ALTER TABLE `cestas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,17 +52,15 @@ DROP TABLE IF EXISTS `lineaspedidos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lineaspedidos` (
-  `lineaPedido` int NOT NULL,
+  `lineaPedido` int NOT NULL AUTO_INCREMENT,
   `idProducto` int DEFAULT NULL,
   `idPedido` int DEFAULT NULL,
   `precioUnitario` float DEFAULT NULL,
-  `cantidad` int DEFAULT NULL,
   PRIMARY KEY (`lineaPedido`),
   KEY `idProducto` (`idProducto`),
   KEY `idPedido` (`idPedido`),
   CONSTRAINT `lineaspedidos_ibfk_1` FOREIGN KEY (`idProducto`) REFERENCES `productos` (`idProducto`),
-  CONSTRAINT `lineaspedidos_ibfk_2` FOREIGN KEY (`idPedido`) REFERENCES `pedidos` (`idPedido`),
-  CONSTRAINT `lineaspedidos_chk_1` CHECK ((`lineaPedido` between 1 and 99))
+  CONSTRAINT `lineaspedidos_ibfk_2` FOREIGN KEY (`idPedido`) REFERENCES `pedidos` (`idPedido`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -128,7 +126,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (30,'4080',1392.34,'MSI GeForce RTX 4080 16GB GAMING X TRIO 16GB DDR6X',13,'images/productos/71aytYjILTL._AC_SL1500_.jpg'),(31,'3070',561.93,'GeForce RTX 3070 Gaming OC 8G NVIDIA 8 GB GDDR6',21,'images/productos/71oheR1WsxL._AC_SL1500_.jpg');
+INSERT INTO `productos` VALUES (30,'4080',1392.34,'MSI GeForce RTX 4080 16GB GAMING X TRIO 16GB DDR6X',15,'images/productos/71aytYjILTL._AC_SL1500_.jpg'),(31,'3070',561.93,'GeForce RTX 3070 Gaming OC 8G NVIDIA 8 GB GDDR6',23,'images/productos/71oheR1WsxL._AC_SL1500_.jpg');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +154,6 @@ CREATE TABLE `productoscestas` (
 
 LOCK TABLES `productoscestas` WRITE;
 /*!40000 ALTER TABLE `productoscestas` DISABLE KEYS */;
-INSERT INTO `productoscestas` VALUES (30,1,2),(31,1,2);
 /*!40000 ALTER TABLE `productoscestas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-19 22:01:27
+-- Dump completed on 2023-11-20 23:34:25

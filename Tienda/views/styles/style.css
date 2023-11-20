@@ -138,24 +138,43 @@
   min-width: 100%;
 }
 
-.form-group .file-upload-default {
-  visibility: hidden;
-  position: absolute;
-}
-
-.input-group-append {
-  display: flex;
-}
-
-.input-group-append button {
-  position: relative;
-  z-index: 2;
-}
-
 .h-20 {
   height: 15%;
 }
 
 .h-10 {
   height: 10%;
+}
+
+.cajaInfoUser {
+  height: 20px;
+  border: 1px solid white;
+}
+
+.cajaInfoUser p {
+  color: white;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+footer {
+  margin-top: 10%;
+}
+
+.cajaCesta {
+  max-height: 300px;
+  width: 250px;
+}
+
+.fotoTabla {
+  height: 150px;
+}
+
+.table {
+  vertical-align: middle;
+  margin-bottom: 0;
+}
+
+.w-35 {
+  width: 35%;
 }

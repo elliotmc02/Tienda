@@ -35,7 +35,7 @@
         $rol = $_SESSION["rol"];
     } else {
         $_SESSION["usuario"] = "invitado";
-        $_SESSION["rol"] = "cliente";
+        $_SESSION["rol"] = "invitado";
         $usuario = $_SESSION["usuario"];
         $rol = $_SESSION["rol"];
     }
@@ -98,69 +98,54 @@
                             <div class="card-body">
                                 <p class="card-text text-start fs-5">En stock: <?php echo $producto->cantidad ?> unidades</p>
                             </div>
-                            <div class="card-footer row row-cols-2">
-                                <p class="card-text text-success text-start fs-4"><?php echo $producto->precio ?>€</p>
-                                <form action="anadir_producto.php" method="post">
-                                    <input type="hidden" name="anadirProducto" value="<?php echo $producto->idProducto ?>">
-                                    <select name="cantidad">
-                                        <?php
-                                        $maxCantidad = min(5, $producto->cantidad);
-                                        for ($i = 1; $i <= $maxCantidad; $i++) {
-                                        ?>
-                                            <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
+                            <form class="h-25" action="anadir_producto.php" method="post">
+                                <div class="card-footer row row-cols-2">
+                                    <p class="card-text text-success text-start fs-4"><?php echo $producto->precio ?>€</p>
                                     <?php
-                                    if ($usuario == "invitado") {
+                                    if ($producto->cantidad == 0) {
                                     ?>
-                                        <button class="btn btn-success" type="submit" disabled><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                        <p class="card-text text-danger fs-4">SIN STOCK</p>
                                     <?php
                                     } else {
+
                                     ?>
-                                        <button class="btn btn-success" type="submit"><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                        <input type="hidden" name="action" value="anadir">
+                                        <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                        <?php
+                                        if ($rol == "invitado") {
+                                        ?>
+                                            <button class="btn btn-success " type="submit" disabled><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <button class="btn btn-success" type="submit"><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                    <?php
+                                        }
+                                    }
+
+                                    ?>
+
+                                </div>
+                                <div class="card-footer">
+                                    <?php
+                                    if ($producto->cantidad > 0) {
+                                    ?>
+                                        <select class="form-select text-center" name="cantidad">
+                                            <?php
+                                            $maxCantidad = min(5, $producto->cantidad);
+                                            for ($i = 1; $i <= $maxCantidad; $i++) {
+                                            ?>
+                                                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
                                     <?php
                                     }
                                     ?>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <?php
-                                if ($rol == "admin") {
-                                    $modalId = 'exampleModal' . $producto->idProducto;
-                                ?>
-                                    <div class="row row-cols-2">
-                                        <form action="modificar_producto.php" method="post">
-                                            <input type="hidden" name="modificarProducto" value="<?php echo $producto->idProducto ?>">
-                                            <input class="btn btn-outline-warning" type="submit" value="Modificar">
-                                        </form>
-                                        <form action="eliminar_producto.php" method="post">
-                                            <input type="hidden" name="eliminarProducto" value="<?php echo $producto->idProducto ?>">
-                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
-                                                Eliminar
-                                            </button>
-                                            <div class="modal fade" id="<?php echo $modalId; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body">
-                                                            <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
-                                                            <h5>Estás apunto de cometer una acción irreversible</h5>
-                                                            Estás seguro de que quieres eliminar este producto?
-                                                        </div>
-                                                        <div class="modal-footer justify-content-center">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                            <input class="btn btn-danger" type="submit" value="Eliminar">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                <?php
-                                }
-                                ?>
-                            </div>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 <?php
@@ -171,10 +156,13 @@
         }
         ?>
     </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <?php
+    require "footer.php";
+    ?>
     <!-- Jquery  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 
 </html>
