@@ -60,7 +60,7 @@
     $precioTotal = $conexion->query($sql)->fetch_assoc()["precioTotal"];
     $productosCesta = [];
     while ($fila = $resultado->fetch_assoc()) {
-        $nuevo_productoCesta = new ProductoCesta(
+        $nuevo_productoCesta = new Producto(
             $fila["idProducto"],
             $fila["nombreProducto"],
             $fila["precio"],

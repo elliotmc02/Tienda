@@ -1,5 +1,5 @@
 <?php
-require "Objetos/productocesta.php";
+require_once "Objetos/producto.php";
 ?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary  mb-5" data-bs-theme="dark">
     <div class="container-fluid">
@@ -28,73 +28,82 @@ require "Objetos/productocesta.php";
                         <hr class='dropdown-divider'>
                     </li>
                     <?php
-                    // Mostrar productos en la cesta
-                    $sql = "SELECT pc.idProducto, p.nombreProducto, p.precio, p.descripcion, pc.cantidad, p.imagen FROM productoscestas pc JOIN productos p ON pc.idProducto = p.idProducto WHERE pc.idCesta = (SELECT idCesta FROM cestas WHERE usuario = '$usuario')";
-                    $resultado = $conexion->query($sql);
-                    $sql = "select precioTotal from cestas where usuario = '$usuario'";
-                    $precioTotal = $conexion->query($sql)->fetch_assoc()["precioTotal"];
-                    $productosCesta = [];
-                    while ($fila = $resultado->fetch_assoc()) {
-                        $nuevo_productoCesta = new ProductoCesta(
-                            $fila["idProducto"],
-                            $fila["nombreProducto"],
-                            $fila["precio"],
-                            $fila["descripcion"],
-                            $fila["cantidad"],
-                            $fila["imagen"]
-                        );
-                        array_push($productosCesta, $nuevo_productoCesta);
-                    }
-                    if (count($productosCesta) == 0) {
+                    if ($rol != "invitado") {
+                        // Mostrar productos en la cesta
+                        $sql = "SELECT pc.idProducto, p.nombreProducto, p.precio, p.descripcion, pc.cantidad, p.imagen FROM productoscestas pc JOIN productos p ON pc.idProducto = p.idProducto WHERE pc.idCesta = (SELECT idCesta FROM cestas WHERE usuario = '$usuario')";
+                        $resultado = $conexion->query($sql);
+                        $sql = "select precioTotal from cestas where usuario = '$usuario'";
+                        $precioTotal = $conexion->query($sql)->fetch_assoc()["precioTotal"];
+                        $productosCesta = [];
+                        while ($fila = $resultado->fetch_assoc()) {
+                            $nuevo_productoCesta = new Producto(
+                                $fila["idProducto"],
+                                $fila["nombreProducto"],
+                                $fila["precio"],
+                                $fila["descripcion"],
+                                $fila["cantidad"],
+                                $fila["imagen"]
+                            );
+                            array_push($productosCesta, $nuevo_productoCesta);
+                        }
+                        if (count($productosCesta) == 0) {
                     ?>
-                        <p class="text-center">No hay productos en la cesta</p>
-                    <?php
+                            <p class="text-center">No hay productos en la cesta</p>
+                        <?php
+                        } else {
+                        ?>
+                            <ul class="list-group overflow-auto cajaCesta">
+                                <?php
+                                foreach ($productosCesta as $producto) {
+                                ?>
+                                    <li class='list-group-item border-0'>
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <p><?php echo $producto->nombreProducto ?></p>
+                                                <p><?php echo $producto->cantidad ?> uds.</p>
+                                            </div>
+                                            <div class="col">
+                                                <form action="eliminar_productocesta.php" method="post">
+                                                    <input type="hidden" name="location" value="index">
+                                                    <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                                    <button class="btn text-danger float-end" type="submit">
+                                                        <i class="bi bi-x fs-4"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <p class="w-100"><?php echo $producto->precio * $producto->cantidad ?> €</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <hr class='dropdown-divider'>
+                                    </li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+                            <hr class="dropdown-divider">
+                            <div class="container row">
+                                <div class="col-4">
+                                    <p class="text-start ml-2">Total</p>
+                                </div>
+                                <div class="col-8">
+                                    <p class="text-end mr-2"><?php echo $precioTotal ?> €</p>
+                                </div>
+                            </div>
+                            <hr class="dropdown-divider">
+                            <div class="container">
+                                <a class="btn btn-primary btn-block" href="cesta.php">Ver cesta</a>
+                            </div>
+                        <?php
+                        }
                     } else {
-                    ?>
-                        <ul class="list-group overflow-auto cajaCesta">
-                            <?php
-                            foreach ($productosCesta as $producto) {
-                            ?>
-                                <li class='list-group-item border-0'>
-                                    <div class="row row-cols-2">
-                                        <div class="col">
-                                            <p><?php echo $producto->nombreProducto ?></p>
-                                            <p><?php echo $producto->cantidad ?> uds.</p>
-                                        </div>
-                                        <div class="col">
-                                            <form action="eliminar_productocesta.php" method="post">
-                                                <input type="hidden" name="location" value="index">
-                                                <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
-                                                <button class="btn text-danger float-end" type="submit">
-                                                    <i class="bi bi-x fs-4"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <p class="w-100"><?php echo $producto->precio * $producto->cantidad ?> €</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <hr class='dropdown-divider'>
-                                </li>
-                            <?php
-                            }
-                            ?>
-                        </ul>
-                        <hr class="dropdown-divider">
-                        <div class="container row">
-                            <div class="col-4">
-                                <p class="text-start ml-2">Total</p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-end mr-2"><?php echo $precioTotal ?> €</p>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
+                        ?>
                         <div class="container">
-                            <a class="btn btn-primary btn-block" href="cesta.php">Ver cesta</a>
+                            <a class="btn btn-primary btn-block" href="login.php">Iniciar Sesión</a>
                         </div>
                     <?php
                     }
+
                     ?>
                 </ul>
             </div>
