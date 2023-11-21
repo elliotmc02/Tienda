@@ -17,7 +17,6 @@ if ($_SESSION["rol"] != "invitado") {
                 $duplicado = mysqli_query($conexion, "select * from productoscestas where idProducto = '$idProducto' and idCesta = '$idCesta'");
                 if (mysqli_num_rows($duplicado) == 0) {
                     $conexion->query($sql);
-                    echo "inserto por primera vez aqui";
                     $correcto = true;
                 } else {
                     $sql = "select cantidad from productoscestas where idProducto = '$idProducto' and idCesta = '$idCesta'";

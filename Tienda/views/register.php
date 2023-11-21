@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="images/logo.png" />
+  <link rel="shortcut icon" href="images/logo_tn.png" />
 
   <!-- PHP links -->
   <?php require "../util/db_tienda.php" ?>
@@ -54,8 +54,7 @@
         if (!preg_match($patron, $temp_contrasena)) {
           $err_contrasena = "La contraseña debe tener al menos una letra mayuscula, una minuscula, un numero y un caracter especial";
         } else {
-          $contrasena = $temp_contrasena;
-          $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+          $contrasena_cifrada = password_hash($temp_contrasena, PASSWORD_DEFAULT);
         }
       }
     }
@@ -92,8 +91,8 @@
   if (isset($usuario) && isset($contrasena_cifrada) && isset($fechaNacimiento)) {
     $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento) VALUES ('$usuario', '$contrasena_cifrada','$fechaNacimiento')";
     $sql_cesta = "INSERT INTO cestas (usuario, precioTotal) VALUES ('$usuario', 0)";
-    $duplicado = mysqli_query($conexion, "select * from usuarios where usuario = '$usuario'");
-    if (mysqli_num_rows($duplicado) > 0) {
+    $duplicado = "select * from usuarios where usuario = '$usuario'";
+    if ($conexion->query($duplicado)->num_rows > 0) {
       $err_usuario = "El usuario ya existe";
     } else {
       if ($conexion->query($sql) && $conexion->query($sql_cesta)) {

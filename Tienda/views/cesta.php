@@ -5,7 +5,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Mi tienda</title>
+    <title>Cesta</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="styles/style.css" />
 
     <!-- Logo Pagina -->
-    <link rel="shortcut icon" href="images/logo.png" />
+    <link rel="shortcut icon" href="images/logo_tn.png" />
 
     <!-- PHP links -->
     <?php require '../util/db_tienda.php'; ?>
@@ -34,7 +34,7 @@
         $rol = $_SESSION["rol"];
     } else {
         $_SESSION["usuario"] = "invitado";
-        $_SESSION["rol"] = "cliente";
+        $_SESSION["rol"] = "invitado";
         $usuario = $_SESSION["usuario"];
         $rol = $_SESSION["rol"];
     }
@@ -50,9 +50,11 @@
     if ($rol == "admin") {
         require "sidebar.php";
     }
-    ?>
 
-    <?php
+    if ($rol == "invitado") {
+        header("Location: login.php");
+    }
+
     // Mostrar productos en la cesta
     $sql = "SELECT pc.idProducto, p.nombreProducto, p.precio, p.descripcion, pc.cantidad, p.imagen FROM productoscestas pc JOIN productos p ON pc.idProducto = p.idProducto WHERE pc.idCesta = (SELECT idCesta FROM cestas WHERE usuario = '$usuario')";
     $resultado = $conexion->query($sql);
@@ -76,7 +78,7 @@
     <div class="container text-center">
         <?php
         if (count($productosCesta) == 0) {
-            echo "<h4>No hay productos actualmente</h4>";
+            echo "<h4>No hay productos en la cesta actualmente</h4>";
         } else {
         ?>
             <table class="table table-striped table-hover table-bordered" data-bs-theme="dark">
@@ -105,6 +107,7 @@
                             <td><img class="ampliarImg fotoTabla" src="<?php echo $producto->imagen ?>" alt="Foto"></td>
                             <td>
                                 <form action="eliminar_productocesta.php" method="post">
+                                    <input type="hidden" name="action" value="eliminarProductoCesta">
                                     <input type="hidden" name="location" value="cesta">
                                     <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
                                     <button class="btn text-danger" type="submit">
@@ -122,7 +125,8 @@
             <div class="container bg-dark w-35 float-end text-light">
                 <div class="row row-cols-2 h-100 p-2">
                     <p class="text-start fs-5 my-auto">Precio total: <?php echo $precioTotal ?>€</p>
-                    <form class="text-end my-auto" action="" method="post">
+                    <form class="text-end my-auto" action="realizar_pedido.php" method="post">
+                        <input type="hidden" name="action" value="realizarPedido">
                         <input class="btn btn-success" type="submit" value="Realizar pedido">
                     </form>
                 </div>
@@ -133,9 +137,6 @@
         }
 ?>
 </div>
-<?php
-require "footer.php";
-?>
 <!-- Jquery  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Bootstrap JS -->

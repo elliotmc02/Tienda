@@ -72,7 +72,7 @@
 }
 
 .auth.login-bg {
-  background: url("../images/auth/Login_bg.jpg");
+  background: url("../images/login/Login_bg.jpg");
   background-size: cover;
 }
 
@@ -157,10 +157,6 @@
   margin-top: 2px;
 }
 
-footer {
-  margin-top: 10%;
-}
-
 .cajaCesta {
   max-height: 300px;
   width: 250px;
@@ -177,4 +173,9 @@ footer {
 
 .w-35 {
   width: 35%;
+}
+
+.logo {
+  width: 140px;
+  height: 60px;
 }

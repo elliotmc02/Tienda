@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/style.css" />
 
     <!-- Logo Pagina -->
-    <link rel="shortcut icon" href="images/logo.png" />
+    <link rel="shortcut icon" href="images/logo_tn.png" />
 
     <!-- PHP links -->
     <?php require '../util/db_tienda.php'; ?>
@@ -38,25 +38,22 @@
 
     // Datos actuales:
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $idProducto = $_GET["idProducto"];
-        $nombre = $_GET["nombre"];
-        $descripcion = $_GET["descripcion"];
-        $precio = $_GET["precio"];
-        $cantidad = $_GET["cantidad"];
+        if ($_GET["action"] == "modificarProducto") {
+            $idProducto = $_GET["idProducto"];
+            $nombre = $_GET["nombreProducto"];
+            $descripcion = $_GET["descripcion"];
+            $precio = $_GET["precio"];
+            $cantidad = $_GET["cantidad"];
+        }
     }
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $idProducto = $_POST["idProducto"];
         $temp_nombre = depurar($_POST["nombre"]);
         $temp_descripcion = depurar($_POST["descripcion"]);
         $temp_precio = depurar($_POST["precio"]);
         $temp_cantidad = depurar($_POST["cantidad"]);
-
-        // Imagen
-        $nombre_imagen = $_FILES["imagen"]["name"];
-        $tipo_imagen = $_FILES["imagen"]["type"];
-        $tamano_imagen = $_FILES["imagen"]["size"];
-        $ruta_temporal = $_FILES["imagen"]["tmp_name"];
 
         // * Comprobar nombre
         if (strlen($temp_nombre) == 0) {
@@ -69,7 +66,7 @@
                 if (!preg_match($patron, $temp_nombre)) {
                     $err_nombre = "El nombre solo pude contener letras, numeros o espacios en blanco";
                 } else {
-                    $nombre = $temp_nombre;
+                    $nombre_nuevo = $temp_nombre;
                 }
             }
         }
@@ -85,7 +82,7 @@
                 if (!preg_match($patron, $temp_descripcion)) {
                     $err_descripcion = "La descripcion solo pude contener letras, numeros o espacios en blanco";
                 } else {
-                    $descripcion = $temp_descripcion;
+                    $descripcion_nuevo = $temp_descripcion;
                 }
             }
         }
@@ -100,7 +97,7 @@
         } elseif ($temp_precio > 99999.99) {
             $err_precio = "El precio no puede ser mayor de 99999.99";
         } else {
-            $precio = $temp_precio;
+            $precio_nuevo = $temp_precio;
         }
 
         // * Comprobar cantidad
@@ -113,19 +110,7 @@
         } elseif ($temp_cantidad > 99999) {
             $err_cantidad = "La cantidad no puede ser mayor de 99999";
         } else {
-            $cantidad = $temp_cantidad;
-        }
-
-        // * Comprobar imagen
-        $formatosValidos = array(IMAGETYPE_PNG, IMAGETYPE_JPEG);
-        if ($_FILES["imagen"]["error"] == 4 || $tamano_imagen == 0 && $_FILES["imagen"]["error"] == 0) {
-            $err_imagen = "Inserte un archivo";
-        } else if ($tamano_imagen > 1000000) {
-            $err_imagen = "El tamaño de la imagen no puede ser mayor de 1MB";
-        } else if (!in_array(exif_imagetype($ruta_temporal), $formatosValidos)) {
-            $err_imagen = "El formato de la imagen debe ser PNG, JPG o JPEG";
-        } else {
-            $ruta_final = "images/productos/" . $nombre_imagen;
+            $cantidad_nuevo = $temp_cantidad;
         }
     }
 
@@ -152,30 +137,30 @@
                     <div class="card bg-dark">
                         <div class="card-body">
                             <h4 class="card-title text-light">Modificar Producto</h4>
-                            <p class="card-description text-light">Producto</p>
+                            <p class="card-description text-light">Modificando el producto con ID <?php echo $idProducto ?></p>
                             <form class="text-light" action="" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Nombre</label>
-                                    <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" value="<?php echo $nombre ?>" />
+                                    <label class="form-label">Nombre</label>
+                                    <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" value="<?php if (isset($nombre)) echo $nombre ?>" />
                                     <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Descripción</label>
-                                    <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" value="<?php echo $descripcion ?>" />
+                                    <label class="form-label">Descripción</label>
+                                    <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion" value="<?php if (isset($descripcion)) echo $descripcion ?>" />
                                     <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="exampleInputName1">Precio</label>
-                                            <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" value="<?php echo $precio ?>" />
+                                            <label class="form-label">Precio</label>
+                                            <input class="form-control mb-1" type="text" placeholder="Precio" name="precio" value="<?php if (isset($precio)) echo $precio ?>" />
                                             <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="exampleInputName1">Cantidad</label>
-                                            <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" value="<?php echo $cantidad ?>" />
+                                            <label class="form-label">Cantidad</label>
+                                            <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad" value="<?php if (isset($cantidad)) echo $cantidad ?>" />
                                             <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
                                         </div>
                                     </div>
@@ -190,20 +175,22 @@
             </div>
             <?php
         }
-        if (isset($nombre) && isset($descripcion) && isset($precio) && isset($cantidad)) {
-            $sql = "UPDATE productos SET nombreProducto = '$nombre', precio = '$precio', descripcion = '$descripcion', cantidad = '$cantidad' WHERE idProducto = '$idProducto'";
-            if ($conexion->query($sql)) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($nombre_nuevo) && isset($descripcion_nuevo) && isset($precio_nuevo) && isset($cantidad_nuevo)) {
+                $sql = "UPDATE productos SET nombreProducto = '$nombre_nuevo', precio = '$precio_nuevo', descripcion = '$descripcion_nuevo', cantidad = '$cantidad_nuevo' WHERE idProducto = '$idProducto'";
+                if ($conexion->query($sql)) {
             ?>
-                <div class="container alert alert-success mt-3" role="alert">
-                    Producto actualizado correctamente
-                </div>
-            <?php
-            } else {
-            ?>
-                <div class="container alert alert-danger mt-3" role="alert">
-                    Ha habido un error al añadir el producto
-                </div>
+                    <div class="container alert alert-success mt-3" role="alert">
+                        Producto actualizado correctamente
+                    </div>
+                <?php
+                } else {
+                ?>
+                    <div class="container alert alert-danger mt-3" role="alert">
+                        Ha habido un error al añadir el producto
+                    </div>
         <?php
+                }
             }
         }
         ?>

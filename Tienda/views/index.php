@@ -5,7 +5,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Mi tienda</title>
+    <title>GPU Galaxy</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="styles/style.css" />
 
     <!-- Logo Pagina -->
-    <link rel="shortcut icon" href="images/logo.png" />
+    <link rel="shortcut icon" href="images/logo_tn.png" />
 
     <!-- PHP links -->
     <?php require '../util/db_tienda.php'; ?>
@@ -107,7 +107,6 @@
                                         <p class="card-text text-danger fs-4">SIN STOCK</p>
                                     <?php
                                     } else {
-
                                     ?>
                                         <input type="hidden" name="action" value="anadir">
                                         <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
@@ -156,9 +155,6 @@
         }
         ?>
     </div>
-    <?php
-    require "footer.php";
-    ?>
     <!-- Jquery  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->

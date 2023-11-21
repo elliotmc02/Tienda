@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="styles/style.css" />
 
   <!-- Logo Pagina -->
-  <link rel="shortcut icon" href="images/logo.png" />
+  <link rel="shortcut icon" href="images/logo_tn.png" />
 
   <!-- PHP links -->
   <?php require '../util/db_tienda.php'; ?>
@@ -144,33 +144,33 @@
               <p class="card-description text-light">Producto</p>
               <form class="text-light" action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                  <label for="exampleInputName1">Nombre</label>
+                  <label class="form-label">Nombre</label>
                   <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre">
                   <?php if (isset($err_nombre)) echo "<label class='text-danger'>" . $err_nombre . "</label>" ?>
                 </div>
                 <div class="form-group">
-                  <label>Descripción</label>
+                  <label class="form-label">Descripción</label>
                   <input class="form-control mb-1" type="text" placeholder="Descripcion" name="descripcion">
                   <?php if (isset($err_descripcion)) echo "<label class='text-danger'>" . $err_descripcion . "</label>" ?>
                 </div>
                 <div class="row">
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label>Precio</label>
+                      <label class="form-label">Precio</label>
                       <input class="form-control mb-1" type="text" placeholder="Precio" name="precio">
                       <?php if (isset($err_precio)) echo "<label class='text-danger'>" . $err_precio . "</label>" ?>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label>Cantidad</label>
+                      <label class="form-label">Cantidad</label>
                       <input class="form-control mb-1" type="text" placeholder="Cantidad" name="cantidad">
                       <?php if (isset($err_cantidad)) echo "<label class='text-danger'>" . $err_cantidad . "</label>" ?>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Insertar Imagen</label>
+                  <label class="form-label">Insertar Imagen</label>
                   <input class="form-control" type="file" name="imagen">
                   <?php if (isset($err_imagen)) echo '<label class=text-danger>' . $err_imagen . '</label>' ?>
                 </div>
