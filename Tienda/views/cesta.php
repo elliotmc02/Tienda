@@ -38,6 +38,11 @@
         $usuario = $_SESSION["usuario"];
         $rol = $_SESSION["rol"];
     }
+
+    if ($usuario != "invitado") {
+        require "funciones/eliminar_productocesta.php";
+        require "funciones/realizar_pedido.php";
+    }
     ?>
 
     <!-- Encabezado -->
@@ -75,8 +80,22 @@
     ?>
     <!-- Contenido de la página -->
     <h2 class="mb-5 text-center">Productos en la cesta</h2>
+    <?php if (isset($mensaje)) {
+    ?>
+        <div class="container alert <?php if ($correcto) {
+                                        echo "alert-success";
+                                    } else {
+                                        echo "alert-danger";
+                                    }   ?> alert-dismissible fade show" role="alert">
+            <?php echo $mensaje; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php
+    }
+    ?>
     <div class="container text-center">
         <?php
+        // comprobar si hay productos en la cesta
         if (count($productosCesta) == 0) {
             echo "<h4>No hay productos en la cesta actualmente</h4>";
         } else {
@@ -106,9 +125,8 @@
                             <td><?php echo $producto->precio * $producto->cantidad ?>€</td>
                             <td><img class="ampliarImg fotoTabla" src="<?php echo $producto->imagen ?>" alt="Foto"></td>
                             <td>
-                                <form action="eliminar_productocesta.php" method="post">
+                                <form action="" method="post">
                                     <input type="hidden" name="action" value="eliminarProductoCesta">
-                                    <input type="hidden" name="location" value="cesta">
                                     <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
                                     <button class="btn text-danger" type="submit">
                                         <i class="bi bi-x fs-4"></i>
@@ -125,7 +143,7 @@
             <div class="container bg-dark w-35 float-end text-light">
                 <div class="row row-cols-2 h-100 p-2">
                     <p class="text-start fs-5 my-auto">Precio total: <?php echo $precioTotal ?>€</p>
-                    <form class="text-end my-auto" action="realizar_pedido.php" method="post">
+                    <form class="text-end my-auto" action="" method="post">
                         <input type="hidden" name="action" value="realizarPedido">
                         <input class="btn btn-success" type="submit" value="Realizar pedido">
                     </form>

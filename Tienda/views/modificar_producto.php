@@ -36,7 +36,7 @@
         $rol = $_SESSION["rol"];
     }
 
-    // Datos actuales:
+    // datos que vienen del administrar_productos
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if ($_GET["action"] == "modificarProducto") {
             $idProducto = $_GET["idProducto"];
@@ -167,7 +167,7 @@
                                 </div>
                                 <input type="hidden" name="idProducto" value="<?php echo $idProducto ?>">
                                 <input class="btn btn-primary m-1" type="submit" value="Modificar" />
-                                <a class="btn btn-secondary" href="./">Cancelar</a>
+                                <a class="btn btn-secondary" href="administrar_productos.php">Cancelar</a>
                             </form>
                         </div>
                     </div>

@@ -5,7 +5,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>GPU Galaxy</title>
+    <title>Administrar Productos</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -46,10 +46,15 @@
             $idProducto = $_POST["idProducto"];
             $sql = "UPDATE productos SET cantidad = cantidad + 1 WHERE idProducto = '$idProducto'";
             $conexion->query($sql);
+
+            $mensaje = "Se ha añadido una unidad al stock";
+            $correcto = true;
         }
     }
 
-
+    if ($rol != "invitado") {
+        require "funciones/eliminar_producto.php";
+    }
     ?>
 
     <!-- Encabezado -->
@@ -63,115 +68,138 @@
         require "sidebar.php";
     }
 
-    if ($rol == "invitado") {
-        header("Location: login.php");
-    }
-
-    // Mostrar productos en la cesta
-    $sql = "SELECT * FROM productos";
-    $resultado = $conexion->query($sql);
-    $productos = [];
-    while ($fila = $resultado->fetch_assoc()) {
-        $nuevo_producto = new Producto(
-            $fila["idProducto"],
-            $fila["nombreProducto"],
-            $fila["precio"],
-            $fila["descripcion"],
-            $fila["cantidad"],
-            $fila["imagen"]
-        );
-        array_push($productos, $nuevo_producto);
-    }
+    if ($rol != "admin") {
     ?>
-    <!-- Contenido de la página -->
-    <h2 class="mb-5 text-center">Administrar Productos</h2>
-    <div class="container text-center">
-        <?php
-        if (count($productos) == 0) {
-            echo "<h4>No se encontraron productos</h4>";
-        } else {
-        ?>
-            <table class="table table-striped table-hover table-bordered" data-bs-theme="dark">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Unidades</th>
-                        <th>Precio</th>
-                        <th></th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="container alert alert-danger mt-3" role="alert">
+            <h1>Acceso denegado</h1>
+            <p>No tienes permisos para acceder a esta página</p>
+            <a href="./">Volver al inicio</a>
+        </div>
+    <?php
+    } else {
 
-                    <?php
-                    foreach ($productos as $producto) {
-                    ?>
-                        <tr class="bg-dark">
-                            <td><?php echo $producto->idProducto ?></td>
-                            <td><?php echo $producto->nombreProducto ?></td>
-                            <td><?php echo $producto->descripcion ?></td>
-                            <td><?php echo $producto->cantidad ?></td>
-                            <td><?php echo $producto->precio ?>€</td>
-                            <td><img class="ampliarImg fotoTabla" src="<?php echo $producto->imagen ?>" alt="Foto"></td>
-                            <td>
-                                <form action="" method="post">
-                                    <input type="hidden" name="action" value="anadirStock">
-                                    <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
-                                    <button class="btn text-success" type="submit">
-                                        <i class="bi bi-plus-lg fs-5"></i>
-                                    </button>
-                                </form>
-                                <form action="modificar_producto.php" method="get">
-                                    <input type="hidden" name="action" value="modificarProducto">
-                                    <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
-                                    <input type="hidden" name="nombreProducto" value="<?php echo $producto->nombreProducto ?>">
-                                    <input type="hidden" name="descripcion" value="<?php echo $producto->descripcion ?>">
-                                    <input type="hidden" name="cantidad" value="<?php echo $producto->cantidad ?>">
-                                    <input type="hidden" name="precio" value="<?php echo $producto->precio ?>">
-                                    <button class="btn text-warning" type="submit">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </button>
-                                </form>
-                                <?php
-                                if ($rol == "admin") {
-                                    $modalId = 'exampleModal' . $producto->idProducto;
-                                }
-                                ?>
-                                <form action="eliminar_producto.php" method="post">
-                                    <input type="hidden" name="action" value="eliminarProducto">
-                                    <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
-                                    <button class="btn text-danger" type="button" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
-                                        <i class="bi bi-x-lg"></i>
-                                    </button>
-                                    <div class="modal fade" id="<?php echo $modalId; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <i class="bi bi-exclamation-octagon-fill fs-3 text-danger"></i>
-                                                    <h5>Estás apunto de cometer una acción irreversible</h5>
-                                                    Estás seguro de que quieres eliminar este producto?
-                                                </div>
-                                                <div class="modal-footer justify-content-center">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                    <input class="btn btn-danger" type="submit" value="Eliminar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
+
+        // Mostrar productos en la cesta
+        $sql = "SELECT * FROM productos";
+        $resultado = $conexion->query($sql);
+        $productos = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $nuevo_producto = new Producto(
+                $fila["idProducto"],
+                $fila["nombreProducto"],
+                $fila["precio"],
+                $fila["descripcion"],
+                $fila["cantidad"],
+                $fila["imagen"]
+            );
+            array_push($productos, $nuevo_producto);
+        }
+    ?>
+        <!-- Contenido de la página -->
+        <h2 class="mb-5 text-center">Administrar Productos</h2>
+        <?php if (isset($mensaje)) {
+        ?>
+            <div class="container alert <?php if ($correcto) {
+                                            echo "alert-success";
+                                        } else {
+                                            echo "alert-danger";
+                                        }   ?> alert-dismissible fade show" role="alert">
+                <?php echo $mensaje; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php
         }
         ?>
-    </div>
+        <div class="container text-center">
+            <?php
+            if (count($productos) == 0) {
+                echo "<h4>No se encontraron productos</h4>";
+            } else {
+            ?>
+                <table class="table table-striped table-hover table-bordered" data-bs-theme="dark">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Unidades</th>
+                            <th>Precio</th>
+                            <th></th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <?php
+                        foreach ($productos as $producto) {
+                        ?>
+                            <tr class="bg-dark">
+                                <td><?php echo $producto->idProducto ?></td>
+                                <td><?php echo $producto->nombreProducto ?></td>
+                                <td><?php echo $producto->descripcion ?></td>
+                                <td><?php echo $producto->cantidad ?></td>
+                                <td><?php echo $producto->precio ?>€</td>
+                                <td><img class="ampliarImg fotoTabla" src="<?php echo $producto->imagen ?>" alt="Foto"></td>
+                                <td>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="action" value="anadirStock">
+                                        <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                        <button class="btn text-success" type="submit">
+                                            <i class="bi bi-plus-lg fs-5"></i>
+                                        </button>
+                                    </form>
+                                    <form action="modificar_producto.php" method="get">
+                                        <input type="hidden" name="action" value="modificarProducto">
+                                        <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                        <input type="hidden" name="nombreProducto" value="<?php echo $producto->nombreProducto ?>">
+                                        <input type="hidden" name="descripcion" value="<?php echo $producto->descripcion ?>">
+                                        <input type="hidden" name="cantidad" value="<?php echo $producto->cantidad ?>">
+                                        <input type="hidden" name="precio" value="<?php echo $producto->precio ?>">
+                                        <button class="btn text-warning" type="submit">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </button>
+                                    </form>
+                                    <?php
+                                    if ($rol == "admin") {
+                                        $modalId = 'exampleModal' . $producto->idProducto;
+                                    }
+                                    ?>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="action" value="eliminarProducto">
+                                        <input type="hidden" name="idProducto" value="<?php echo $producto->idProducto ?>">
+                                        <button class="btn text-danger" type="button" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                        <div class="modal fade" id="<?php echo $modalId; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <i class="bi bi-exclamation-octagon-fill fs-3 text-danger"></i>
+                                                        <h5>Estás apunto de cometer una acción irreversible</h5>
+                                                        Estás seguro de que quieres eliminar este producto?
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <input class="btn btn-danger" type="submit" value="Eliminar">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            <?php
+            }
+            ?>
+        </div>
+    <?php
+    }
+    ?>
     <!-- Jquery  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->

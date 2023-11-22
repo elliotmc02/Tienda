@@ -146,17 +146,6 @@
   height: 10%;
 }
 
-.cajaInfoUser {
-  height: 20px;
-  border: 1px solid white;
-}
-
-.cajaInfoUser p {
-  color: white;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
 .cajaCesta {
   max-height: 300px;
   width: 250px;
@@ -178,4 +167,19 @@
 .logo {
   width: 140px;
   height: 60px;
+}
+
+.btnIniciar {
+  width: 150px;
+}
+
+.cajaUser {
+  width: 75px;
+  height: 50px;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
+.logito {
+  margin-left: 25px;
 }

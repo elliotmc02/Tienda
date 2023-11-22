@@ -1,6 +1,4 @@
 <?php
-require "../util/db_tienda.php";
-session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["action"] == "eliminarProductoCesta") {
         $usuario = $_SESSION["usuario"];
@@ -23,11 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "update cestas set precioTotal = (precioTotal - ('$precio' * '$cantidadEnCesta')) where idCesta = '$idCesta'";
         $conexion->query($sql);
 
-        if ($_POST["location"] == "index") {
-            header("Location: ./");
-        } else {
-            header("Location: ./cesta.php");
-        }
+        $mensaje = "Producto eliminado de la cesta";
+        $correcto = true;
     }
 }
-?>

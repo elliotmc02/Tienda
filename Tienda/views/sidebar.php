@@ -7,7 +7,7 @@
     <ul class="navbar-nav">
       <li class="nav-item"><a class="nav-link" href="insertar_producto.php">Insertar Producto</a></li>
       <li class="nav-item"><a class="nav-link" href="administrar_productos.php">Administrar Productos</a></li>
-      <li class="nav-item"><a class="nav-link" href="administrar_usuarios.php">Administrar Usuarios</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Administrar Usuarios (Por hacer)</a></li>
     </ul>
   </div>
 </div>

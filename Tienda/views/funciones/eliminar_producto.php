@@ -1,5 +1,4 @@
 <?php
-require "../util/db_tienda.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["action"] == "eliminarProducto") {
         $idProducto = $_POST["idProducto"];
@@ -15,7 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $sql = "DELETE FROM productos WHERE idProducto = '$idProducto'";
         $conexion->query($sql);
-        header('location: administrar_productos.php');
+
+        $mensaje = "Producto eliminado con éxito";
+        $correcto = true;
     }
 }
 ?>

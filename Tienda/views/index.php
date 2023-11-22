@@ -40,9 +40,15 @@
         $rol = $_SESSION["rol"];
     }
 
+
+    // funciones añadir producto a cesta y eliminar producto de cesta
+    if ($rol != "invitado") {
+        require "funciones/anadir_producto.php";
+        require "funciones/eliminar_productocesta.php";
+    }
     // comprobar si el usuario ha sido eliminado
-    $res = mysqli_query($conexion, "select usuario from usuarios where usuario = '$usuario'");
-    if (mysqli_num_rows($res) == 0) {
+    $res = "SELECT usuario from usuarios where usuario = '$usuario'";
+    if ($conexion->query($res)->num_rows == 0) {
         session_destroy();
     }
 
@@ -62,6 +68,7 @@
         array_push($productos, $nuevo_producto);
     }
     ?>
+
     <!-- Encabezado -->
     <?php
     require "header.php";
@@ -76,6 +83,19 @@
 
     <!-- Contenido de la página -->
     <h2 class="mb-5 text-center">Lista de Productos</h2>
+    <?php if (isset($mensaje)) {
+    ?>
+        <div class="container alert <?php if ($correcto) {
+                                        echo "alert-success";
+                                    } else {
+                                        echo "alert-danger";
+                                    }   ?> alert-dismissible fade show" role="alert">
+            <?php echo $mensaje; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php
+    }
+    ?>
     <div class="container text-center">
         <?php
         if (count($productos) == 0) {
@@ -98,13 +118,13 @@
                             <div class="card-body">
                                 <p class="card-text text-start fs-5">En stock: <?php echo $producto->cantidad ?> unidades</p>
                             </div>
-                            <form class="h-25" action="anadir_producto.php" method="post">
+                            <form class="h-25" action="" method="post">
                                 <div class="card-footer row row-cols-2">
                                     <p class="card-text text-success text-start fs-4"><?php echo $producto->precio ?>€</p>
                                     <?php
                                     if ($producto->cantidad == 0) {
                                     ?>
-                                        <p class="card-text text-danger fs-4">SIN STOCK</p>
+                                        <p class="card-text text-danger fs-4">AGOTADO</p>
                                     <?php
                                     } else {
                                     ?>
@@ -113,7 +133,7 @@
                                         <?php
                                         if ($rol == "invitado") {
                                         ?>
-                                            <button class="btn btn-success " type="submit" disabled><i class="bi bi-cart-plus-fill fs-3"></i></button>
+                                            <a class="btn btn-success" href="login.php"><i class="bi bi-cart-plus-fill fs-3"></i></a>
                                         <?php
                                         } else {
                                         ?>
@@ -144,7 +164,6 @@
                                     ?>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 <?php
